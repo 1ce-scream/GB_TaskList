@@ -15,7 +15,7 @@ class TaskListVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        taskListTableView.delegate = self
+        taskListTableView.delegate = self
         taskListTableView.dataSource = self
     }
     
@@ -26,7 +26,6 @@ class TaskListVC: UIViewController {
     
     @IBAction func addTask(_ sender: Any) {
         let newRowIndex = task.tasks.count
-
         task.tasks.append(Task("Task \(newRowIndex + 1)"))
         let indexPath = IndexPath(row: newRowIndex, section: 0)
         let indexPaths = [indexPath]
@@ -51,5 +50,16 @@ extension TaskListVC: UITableViewDataSource {
         let cellData = task.tasks[indexPath.row]
         cell.configure(labelText: "\(cellData.name) (\(cellData.description()))")
         return cell
+    }
+}
+
+extension TaskListVC: UITableViewDelegate {
+    func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        let task = task.tasks[indexPath.row]
+        let vc = storyboard!.instantiateViewController(
+            withIdentifier: "TaskListVC") as! Self
+        vc.setTask(task as? Task)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
