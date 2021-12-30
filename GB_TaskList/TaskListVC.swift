@@ -13,6 +13,10 @@ class TaskListVC: UIViewController {
     
     @IBOutlet weak var taskListTableView: UITableView!
     
+    override func viewWillAppear(_: Bool) {
+        taskListTableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         taskListTableView.delegate = self
