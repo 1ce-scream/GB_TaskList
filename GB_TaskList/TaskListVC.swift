@@ -9,6 +9,8 @@ import UIKit
 
 class TaskListVC: UIViewController {
     
+    private var task = Task("root")
+    
     @IBOutlet weak var taskListTableView: UITableView!
     
     override func viewDidLoad() {
@@ -17,15 +19,25 @@ class TaskListVC: UIViewController {
         taskListTableView.dataSource = self
     }
     
+    public func setTask(_ task: Task?) {
+        guard let task = task else { return }
+        self.task = task
+    }
     
     @IBAction func addTask(_ sender: Any) {
+        let newRowIndex = task.tasks.count
+
+        task.tasks.append(Task("Task \(newRowIndex + 1)"))
+        let indexPath = IndexPath(row: newRowIndex, section: 0)
+        let indexPaths = [indexPath]
+        taskListTableView.insertRows(at: indexPaths, with: .automatic)
     }
 }
 
 extension TaskListVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return task.tasks.count
     }
     
     func tableView(_ tableView: UITableView,
@@ -36,7 +48,8 @@ extension TaskListVC: UITableViewDataSource {
                 for: indexPath) as? TaskListCell
         else { return UITableViewCell() }
         
-        cell.configure(labelText: "Hello")
+        let cellData = task.tasks[indexPath.row]
+        cell.configure(labelText: "\(cellData.name) (\(cellData.description()))")
         return cell
     }
 }
