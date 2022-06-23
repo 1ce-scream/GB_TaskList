@@ -1,2 +1,2 @@
 # Simple Task list app
-## Project goal: get to know and use on practice pattern Composite
+## Project goal: use on practice pattern Composite
